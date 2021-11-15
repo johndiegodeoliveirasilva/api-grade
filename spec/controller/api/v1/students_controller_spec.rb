@@ -25,7 +25,6 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
       end
     end
 
-
     describe "PATCH student #update" do
       it 'should update student' do
         patch :update, params: {id: student, student: { email: student.email}}, format: :json
@@ -37,6 +36,13 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
                                                         email: 'bad_email',
                                                         year: 12 }}, format: :json
         expect(response).to have_http_status :unprocessable_entity
+      end
+    end
+
+    describe 'DELETE student' do
+      it 'should destroy student' do
+        delete :destroy, params: {id: student}, format: :json
+        expect(response).to have_http_status :no_content
       end
     end
   end

@@ -1,5 +1,5 @@
 class Api::V1::StudentsController < ApplicationController
-  before_action :student, only: %w[show update]
+  before_action :student, only: %w[show update destroy]
 
   def show
     render json: @student
@@ -22,6 +22,12 @@ class Api::V1::StudentsController < ApplicationController
     else
       render json: @student.errors, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /students/1
+  def destroy
+    @student.destroy
+    head 204
   end
 
   private
