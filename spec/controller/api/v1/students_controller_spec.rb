@@ -12,5 +12,17 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
         expect(student.email).to eq(json_response['email'])
       end   
     end
+
+    describe "Create student #new" do
+      it "should create student" do
+        post :create, params: { student: { name: 'Teste', email: 'test@test.org', year: 20 }}, format: :json
+        expect(response).to have_http_status :created
+      end
+
+      it 'should not create user with taken email' do
+        post :create, params: { student: { name: 'John', email: student.email, year: 30 }}, format: :json
+        expect(response).to have_http_status :unprocessable_entity
+      end
+    end
   end
 end
