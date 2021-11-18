@@ -3,6 +3,13 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
   describe "Student" do
     let(:student) { create(:student)}
 
+    describe "GET students#index}" do
+      it 'should show students' do
+        get :index, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
     describe "GET students#show" do
       it "should show student" do
         get :show, params: { id: student}, format: :json
