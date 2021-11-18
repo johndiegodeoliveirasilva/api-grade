@@ -1,5 +1,10 @@
 class Api::V1::StudentsController < ApplicationController
   before_action :student, only: %w[show update destroy]
+   let(:grade) { create(:grade) }
+
+  def index
+    render json: Student.all
+  end
 
   def show
     render json: @student
