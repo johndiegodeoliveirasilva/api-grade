@@ -1,7 +1,7 @@
 require 'rails_helper'
 RSpec.describe Api::V1::StudentsController, type: :controller do
   describe "Student" do
-    let(:student) { create(:student)}
+    let(:student) { create(:student) }
 
     describe "GET students#index}" do
       it 'should show students' do
