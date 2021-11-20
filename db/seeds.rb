@@ -1,7 +1,17 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Grade.delete_all
+Student.delete_all
+
+
+5.times do
+  time = DateTime.current + rand(10)
+  grade = Grade.create! title: Faker::Games::ElderScrolls.creature,
+                        time_start: time, time_end: time + 2.days
+  puts "Created a new grade: #{grade.title}"
+  30.times do
+    student = Student.create! name: Faker::Name.name,
+                              email: Faker::Internet.free_email,
+                              year: Faker::Date.between(from: '1996-01-23', to: '2020-09-25').strftime('%d-%m-%Y')
+    student.grades << grade
+    puts "Create a new student #{student.name} registred in class #{grade.title}"
+  end
+end
