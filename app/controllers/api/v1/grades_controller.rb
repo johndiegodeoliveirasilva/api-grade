@@ -6,22 +6,22 @@ class Api::V1::GradesController < ApplicationController
   end
 
   def show
-    render json: @grade
+    render json: GradeSerializer.new(@grade).serializable_hash
   end
 
   def create
-    grade = Grade.new(grade_params)
+    @grade = Grade.new(grade_params)
 
-    if grade.save
-      render json: grade, status: :created
+    if @grade.save
+      render json: GradeSerializer.new(@grade).serializable_hash
     else
-      render json: { errors: grade.errors }, status: :forbidden
+      render json: { errors: @grade.errors }, status: :forbidden
     end
   end
 
   def update
     if @grade.update(grade_params)
-      render json: @grades
+      render json: GradeSerializer.new(@grade).serializable_hash
     else
       render json: @grade.errors, status: :forbidden 
     end

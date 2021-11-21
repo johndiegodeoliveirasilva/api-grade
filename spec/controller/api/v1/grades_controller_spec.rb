@@ -8,7 +8,7 @@ RSpec.describe Api::V1::GradesController, type: :controller do
         get :show, params: { id: grade}, format: :json
         expect(response.status).to eq(200)
         json_response = JSON.parse(self.response.body)
-        expect(grade.title).to eq(json_response['title'])
+        expect(grade.title).to eq(json_response['data']['attributes']['title'])
       end
       
       it 'should show grades' do
@@ -21,7 +21,7 @@ RSpec.describe Api::V1::GradesController, type: :controller do
       it 'should create grade' do
         post :create, params: { grade: { title: grade.title, time_start: grade.time_start,
                                          time_end: grade.time_end } }, format: :json
-        expect(response).to have_http_status(:created)
+        expect(response).to have_http_status(:ok)
       end
 
       it 'should forbid create grade' do
