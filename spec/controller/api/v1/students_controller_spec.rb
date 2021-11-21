@@ -16,14 +16,14 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
         expect(response.status).to eq(200)
         # Test to ensure response contains the correct email
         json_response = JSON.parse(self.response.body)
-        expect(student.email).to eq(json_response['email'])
+        expect(student.email).to eq(json_response['data']['attributes']['email'])
       end   
     end
 
     describe "POST student #new" do
       it "should create student" do
         post :create, params: { student: { name: 'Teste', email: 'test@test.org', year: 20 }}, format: :json
-        expect(response).to have_http_status :created
+        expect(response).to have_http_status :ok
       end
 
       it 'should not create user with taken email' do
