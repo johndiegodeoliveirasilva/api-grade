@@ -5,10 +5,15 @@ RSpec.describe Api::V1::GradesController, type: :controller do
     describe "GET gradess#show" do
 
       it "should show grade" do
+        students = create(:student)
+        grade.students << students
         get :show, params: { id: grade}, format: :json
         expect(response.status).to eq(200)
-        json_response = JSON.parse(self.response.body)
-        expect(grade.title).to eq(json_response['data']['attributes']['title'])
+        json_response = JSON.parse(self.response.body, symbolize_names: true)
+        expect(grade.title).to eq(json_response.dig(:data, :attributes, :title))
+        expect(grade.students.first.id.to_s).to eq(json_response.dig(:data, 
+                                                  :relationships, :students, :data, 0, :id))
+        expect(grade.students.first.email).to eq(json_response.dig(:included, 0, :attributes, :email))
       end
       
       it 'should show grades' do

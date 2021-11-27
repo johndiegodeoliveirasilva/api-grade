@@ -3,10 +3,10 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
   describe "Student" do
     let(:student) { create(:student) }
 
-    describe "GET students#index}" do
+    describe "GET students#index" do
       it 'should show students' do
         get :index, format: :json
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
     end
 
