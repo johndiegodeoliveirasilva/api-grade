@@ -15,9 +15,9 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
         get :show, params: { id: student}, format: :json
         expect(response.status).to eq(200)
         # Test to ensure response contains the correct email
-        json_response = JSON.parse(self.response.body)
-        expect(student.email).to eq(json_response['data']['attributes']['email'])
-      end   
+        json_response = JSON.parse(self.response.body, symbolize_names: true)
+        expect(student.email).to eq(json_response.dig(:data, :attributes, :email))
+      end
     end
 
     describe "POST student #new" do
