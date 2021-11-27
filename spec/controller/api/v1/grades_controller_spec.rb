@@ -1,12 +1,12 @@
 require 'rails_helper'
 RSpec.describe Api::V1::GradesController, type: :controller do
   describe 'Grades' do
-   let(:grade) { create(:grade) }
+    let(:grade) { create(:grade) do |grade|
+      grade.students.create(attributes_for(:student))
+    end}
     describe "GET gradess#show" do
 
       it "should show grade" do
-        students = create(:student)
-        grade.students << students
         get :show, params: { id: grade}, format: :json
         expect(response.status).to eq(200)
         json_response = JSON.parse(self.response.body, symbolize_names: true)
