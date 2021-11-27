@@ -2,6 +2,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::StudentsController, type: :controller do
   describe "Student" do
     let(:student) { create(:student) }
+    let(:grade) { create(:grade) }
 
     describe "GET students#index" do
       it 'should show students' do
@@ -12,11 +13,14 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
 
     describe "GET students#show" do
       it "should show student" do
+        student.grades << grade
         get :show, params: { id: student}, format: :json
         expect(response.status).to eq(200)
         # Test to ensure response contains the correct email
         json_response = JSON.parse(self.response.body, symbolize_names: true)
         expect(student.email).to eq(json_response.dig(:data, :attributes, :email))
+        expect(student.grades.first.id.to_s).to eq(json_response.dig(:data, :relationships, :grades, :data, 0, :id))
+        expect(student.grades.first.title).to eq(json_response.dig(:included, 0, :attributes, :title))
       end
     end
 

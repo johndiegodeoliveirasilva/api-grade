@@ -6,7 +6,8 @@ class Api::V1::StudentsController < ApplicationController
   end
 
   def show
-    render json: StudentSerializer.new(@student).serializable_hash
+    options = { include: [:grades ] }
+    render json: StudentSerializer.new(@student, options).serializable_hash
   end
 
   # POST /students
