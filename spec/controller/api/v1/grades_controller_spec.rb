@@ -3,7 +3,7 @@ RSpec.describe Api::V1::GradesController, type: :controller do
   describe 'Grades' do
     let(:grade) { create(:grade) do |grade|
       grade.students.create(attributes_for(:student))
-    end}
+    end }
     describe "GET gradess#show" do
 
       it "should show grade" do
