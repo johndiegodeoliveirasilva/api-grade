@@ -6,14 +6,15 @@ class Api::V1::StudentsController < ApplicationController
   end
 
   def show
-    render json: @student
+    options = { include: [:grades ] }
+    render json: StudentSerializer.new(@student, options).serializable_hash
   end
 
   # POST /students
   def create
     @student = Student.new(student_params)
     if @student.save
-      render json: @student, status: :created
+      render json: StudentSerializer.new(@student).serializable_hash
     else
       render json: @student.errors, status: :unprocessable_entity
     end
@@ -22,7 +23,7 @@ class Api::V1::StudentsController < ApplicationController
   # PATCH/PUT /students/1
   def update
     if @student.update(student_params)
-      render json: @student, status: :ok
+      render json: StudentSerializer.new(@student).serializable_hash
     else
       render json: @student.errors, status: :unprocessable_entity
     end

@@ -1,14 +1,19 @@
 require 'rails_helper'
 RSpec.describe Api::V1::GradesController, type: :controller do
   describe 'Grades' do
-   let(:grade) { create(:grade) }
+    let(:grade) { create(:grade) do |grade|
+      grade.students.create(attributes_for(:student))
+    end }
     describe "GET gradess#show" do
 
       it "should show grade" do
         get :show, params: { id: grade}, format: :json
         expect(response.status).to eq(200)
-        json_response = JSON.parse(self.response.body)
-        expect(grade.title).to eq(json_response['title'])
+        json_response = JSON.parse(self.response.body, symbolize_names: true)
+        expect(grade.title).to eq(json_response.dig(:data, :attributes, :title))
+        expect(grade.students.first.id.to_s).to eq(json_response.dig(:data, 
+                                                  :relationships, :students, :data, 0, :id))
+        expect(grade.students.first.email).to eq(json_response.dig(:included, 0, :attributes, :email))
       end
       
       it 'should show grades' do
@@ -21,7 +26,7 @@ RSpec.describe Api::V1::GradesController, type: :controller do
       it 'should create grade' do
         post :create, params: { grade: { title: grade.title, time_start: grade.time_start,
                                          time_end: grade.time_end } }, format: :json
-        expect(response).to have_http_status(:created)
+        expect(response).to have_http_status(:ok)
       end
 
       it 'should forbid create grade' do
