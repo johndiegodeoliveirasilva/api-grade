@@ -4,6 +4,8 @@ RSpec.describe Api::V1::GradesController, type: :controller do
     let(:grade) { create(:grade) do |grade|
       grade.students.create(attributes_for(:student))
     end }
+
+    let(:grades) { create_list :grade, 2, title: 'TV'}
     describe "GET gradess#show" do
 
       it "should show grade" do
@@ -19,6 +21,16 @@ RSpec.describe Api::V1::GradesController, type: :controller do
       it 'should show grades' do
         get :index, format: :json
         expect(response.status).to eq(200)
+      end
+
+      it 'should filter grades by title' do
+        grades
+        expect(Grade.filter_by_title('tv').count).to eq(2)
+      end
+
+      it 'should filter grades by title and sort them' do
+        grades
+        expect(Grade.filter_by_title('tv').sort).to eq([Grade.first, Grade.last])
       end
     end
 
