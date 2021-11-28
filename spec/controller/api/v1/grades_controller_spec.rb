@@ -4,6 +4,7 @@ RSpec.describe Api::V1::GradesController, type: :controller do
     let(:grade) { create(:grade) do |grade|
       grade.students.create(attributes_for(:student))
     end }
+  
 
     let(:grades) { create_list :grade, 2, title: 'TV'}
     describe "GET gradess#show" do
@@ -32,6 +33,17 @@ RSpec.describe Api::V1::GradesController, type: :controller do
         grades
         expect(Grade.filter_by_title('tv').sort).to eq([Grade.first, Grade.last])
       end
+
+      it 'should filter grades by time_start' do
+        grades
+        expect(Grade.filter_by_date('2021-11-28 00:00:00', '2021-11-28 23:59:59').count).to eq(2)
+      end
+
+      it 'should not filter grades by time_start' do
+        grades
+        expect(Grade.filter_by_date('2021-11-27 00:00:00', '2021-11-27 23:59:59').count).to eq(0)
+      end
+
     end
 
     describe 'POST grade#create' do
