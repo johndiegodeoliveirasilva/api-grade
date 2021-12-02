@@ -5,10 +5,24 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
       student.grades.create(attributes_for(:grade))
     end }
 
+    let(:students) { create_list :student, 5, name: 'Johnson'}
     describe "GET students#index" do
       it 'should show students' do
         get :index, format: :json
         expect(response).to have_http_status(:ok)
+      end
+
+      it 'should filter students by name' do
+        students
+        expect(Student.filter_by_name('johnson').count).to eq(5)
+      end
+
+      it 'should filter students by email' do
+        expect(Student.filter_by_email(students.first.email).count).to eq(1)
+      end
+
+      it 'should not filter students by email' do
+        expect(Student.filter_by_email("#{students.first.email}ola").count).to eq(0)
       end
     end
 
