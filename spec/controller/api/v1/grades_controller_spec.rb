@@ -36,14 +36,13 @@ RSpec.describe Api::V1::GradesController, type: :controller do
 
       it 'should filter grades by time_start' do
         grades
-        expect(Grade.filter_by_date('2021-11-28 00:00:00', '2021-11-28 23:59:59').count).to eq(2)
+        expect(Grade.filter_by_date(Date.current.beginning_of_day,  Date.current.end_of_day).count).to eq(2)
       end
 
       it 'should not filter grades by time_start' do
         grades
         expect(Grade.filter_by_date('2021-11-27 00:00:00', '2021-11-27 23:59:59').count).to eq(0)
       end
-
     end
 
     describe 'POST grade#create' do

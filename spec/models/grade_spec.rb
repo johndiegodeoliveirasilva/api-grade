@@ -8,7 +8,7 @@ RSpec.describe Grade, type: :model do
     end
 
     it 'should not have a future time_start' do
-      grade.time_start = DateTime.current - 2.day
+      grade.time_start = DateTime.current - 30.day
       expect(grade).not_to be_valid
     end
 
