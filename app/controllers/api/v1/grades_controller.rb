@@ -3,7 +3,7 @@ class Api::V1::GradesController < ApplicationController
   before_action :define_grade, only: %w[show update destroy]
 
   def index
-    @pagy, @grades = pagy(Grade.all, items: params[:page])
+    @pagy, @grades = pagy(Grade.all, items: per_page)
 
     options = {
       links: {
