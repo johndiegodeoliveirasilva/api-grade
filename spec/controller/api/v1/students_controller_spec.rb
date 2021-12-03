@@ -10,6 +10,11 @@ RSpec.describe Api::V1::StudentsController, type: :controller do
       it 'should show students' do
         get :index, format: :json
         expect(response).to have_http_status(:ok)
+        json_response = JSON.parse(response.body, symbolize_names: true)
+        expect(json_response.dig(:links, :first)).to be_truthy
+        expect(json_response.dig(:links, :last)).to be_truthy
+        expect(json_response.dig(:links, :prev)).to be_truthy
+        expect(json_response.dig(:links, :next)).to be_truthy
       end
 
       it 'should filter students by name' do
