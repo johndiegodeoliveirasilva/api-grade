@@ -22,6 +22,11 @@ RSpec.describe Api::V1::GradesController, type: :controller do
       it 'should show grades' do
         get :index, format: :json
         expect(response.status).to eq(200)
+        json_response = JSON.parse(response.body, symbolize_names: true)
+        expect(json_response.dig(:links, :first)).to be_truthy
+        expect(json_response.dig(:links, :last)).to be_truthy
+        expect(json_response.dig(:links, :prev)).to be_truthy
+        expect(json_response.dig(:links, :next)).to be_truthy
       end
 
       it 'should filter grades by title' do
