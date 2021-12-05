@@ -50,3 +50,5 @@ gem "faker", "~> 2.19"
 gem "jsonapi-serializer", "~> 2.2"
 
 gem "pagy", "~> 5.6"
+
+gem "bullet", "~> 6.1", :group => :development
