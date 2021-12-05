@@ -4,14 +4,7 @@ class Api::V1::StudentsController < ApplicationController
 
   def index
     @pagy, @students = pagy(Student.all, items: per_page)
-    options = {
-      links: { 
-        first: api_v1_students_path(page: 1),
-        last: api_v1_students_path(page: @pagy.count),
-        prev: api_v1_students_path(page: @pagy.prev),
-        next: api_v1_students_path(page: @pagy.next)
-       }
-    }
+    options = get_links_serializer_options(:api_v1_students_path, @pagy)
     render json: StudentSerializer.new(@studens, options).serializable_hash
   end
 

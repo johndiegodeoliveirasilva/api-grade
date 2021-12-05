@@ -5,14 +5,7 @@ class Api::V1::GradesController < ApplicationController
   def index
     @pagy, @grades = pagy(Grade.all, items: per_page)
 
-    options = {
-      links: {
-        first: api_v1_grades_path(page: 1),
-        last: api_v1_grades_path(page: @pagy.count),
-        prev: api_v1_grades_path(page: @pagy.prev),
-        next: api_v1_grades_path(page: @pagy.next)
-      }
-    }
+    options = get_links_serializer_options(:api_v1_grades_path, @pagy)
     render json: GradeSerializer.new(@grades, options).serializable_hash
   end
 
